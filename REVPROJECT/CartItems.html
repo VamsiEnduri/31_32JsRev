@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart Items</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #888;
+        padding: 12px;
+        text-align: center;
+      }
+      img {
+        width: 80px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🛒 Cart Items</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Category</th>
+          <th>Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <p id="totalPrice"></p>
+    <button id="checkout">proceedToCheckout</button>
+
+    <script>
+      let allcartItems = JSON.parse(localStorage.getItem("cart")) || [];
+      let tBody = document.querySelector("tbody");
+
+      function showCartItems() {
+        tBody.innerHTML = "";
+        let totalPrice = 0;
+        allcartItems.forEach((item, index) => {
+          totalPrice += item.price;
+          let totalPriceTag = document.getElementById("totalPrice");
+          totalPriceTag.innerHTML = `total price:-- ${totalPrice.toFixed(2)}`;
+          // let trData = document.createElement("tr");
+          trData.innerHTML += `
+        <tr>
+          
+          <td>${index + 1}</td>
+        <td>${item.title || item.name}</td>
+        <td><img src="${item.image}" /></td>
+        <td>${item.category}</td>
+        <td>₹${item.price}</td>
+        <td><button onclick="deleteItem(${index})">dlete</button></td></tr>
+      `;
+          tBody.appendChild(trData);
+        });
+      }
+      showCartItems();
+
+      function deleteItem(index) {
+        allcartItems.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(allcartItems));
+        showCartItems();
+      }
+
+      console.log(allcartItems);
+
+      document.getElementById("checkout").addEventListener("click", () => {
+        alert("✅ Payment Done!");
+        localStorage.removeItem("cart");
+        location.href = "./DashBaord.html";
+      });
+    </script>
+  </body>
+</html>

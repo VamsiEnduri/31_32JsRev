@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" id="loginFormSubmit">
+      <input type="email" placeholder="email" id="email" />
+      <input type="password" placeholder="password" id="password"/>
+      <button type="submit">signup</button>
+    </form>
+    <script>
+        let loginFormSubmitBtn=document.getElementById("loginFormSubmit");
+
+        let emailInput=document.getElementById("email")
+        let passwordInput=document.getElementById("password")
+
+        loginFormSubmitBtn.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            let emailInputValue=emailInput.value.trim()
+            let passwordInputValue=passwordInput.value.trim()
+
+            if( emailInputValue ==="" || passwordInputValue === ""){
+                return alert("pls fill all fileds")
+            }
+
+            let allUsers=JSON.parse(localStorage.getItem("allUsers")) || [];
+
+
+            let userFound=allUsers.find((x)=>x.email === emailInputValue && x.password===passwordInputValue)
+            
+            if(userFound){
+                localStorage.setItem("loggedInUser",JSON.stringify(userFound))
+                location.href="./DashBaord.html"
+            }else{
+                alert("user not found")
+            }
+            
+            
+        })
+    </script>
+  </body>
+</html>

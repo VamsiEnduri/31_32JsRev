@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" id="signupFormSubmit">
+      <input type="text" placeholder="name" id="name" />
+      <input type="email" placeholder="email" id="email" />
+      <input type="password" placeholder="password" id="password"/>
+      <button type="submit">signup</button>
+    </form>
+    <script>
+        let signupFormSubmitBtn=document.getElementById("signupFormSubmit");
+
+        let nameInput=document.getElementById("name")
+        let emailInput=document.getElementById("email")
+        let passwordInput=document.getElementById("password")
+
+        signupFormSubmitBtn.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            let nameInputValue=nameInput.value.trim()
+            let emailInputValue=emailInput.value.trim()
+            let passwordInputValue=passwordInput.value.trim()
+
+            if(nameInputValue === "" || emailInputValue ==="" || passwordInputValue === ""){
+                return alert("pls fill all fileds")
+            }
+
+            let allUsers=JSON.parse(localStorage.getItem("allUsers")) || [];
+
+            let singUpUser={
+                name:nameInputValue,
+                email:emailInputValue,
+                password:passwordInputValue
+            }
+            allUsers.push(singUpUser)
+            localStorage.setItem("allUsers",JSON.stringify(allUsers))
+            location.href="./Login.html"
+        })
+    </script>
+  </body>
+</html>

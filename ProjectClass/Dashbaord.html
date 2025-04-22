@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <p id="user"></p>
+    <button id="cartItems">cartItems</button>
+
+    <div id="prdocutCardsContainer"></div>
+    <script>
+      const cartItemsBtn = document.getElementById("cartItems");
+      cartItemsBtn.addEventListener("click", () => {
+        location.href = "./cartItems.html";
+      });
+
+      let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const pTag = document.getElementById("user");
+      const prdocutCardsContainer = document.getElementById(
+        "prdocutCardsContainer"
+      );
+      prdocutCardsContainer.className = "praentCards";
+      //    prdocutCardsContainer.style.display="grid"
+      //    prdocutCardsContainer.style.gridTemplateColumns="repeat(4,1fr)"
+      pTag.innerText = `
+       welcome ${loggedInUser.name}
+       `;
+      async function getData() {
+        const res = await fetch("https://fakestoreapi.com/products");
+        const mainData = await res.json();
+        let allCartItems =
+          JSON.parse(localStorage.getItem("allCartItems")) || [];
+        //    console.log(mainData)
+        mainData.forEach((product, index) => {
+          console.log(product);
+
+          let productCardDiv = document.createElement("div");
+          productCardDiv.id = "card";
+
+          productCardDiv.innerHTML = `
+            <img src=${product.image} />
+            <p>${product.title}</p>
+            <button id="addToCart">AddToCart</button>
+            `;
+          const addtocartBtn = productCardDiv.querySelector("#addToCart");
+          addtocartBtn.addEventListener("click", () => {
+            alert("item j=has been added to cart successfully!!!!!!");
+
+            allCartItems.push(product);
+
+            localStorage.setItem("allCartItems", JSON.stringify(allCartItems));
+          });
+
+          prdocutCardsContainer.appendChild(productCardDiv);
+        });
+
+        //    console.log(await res.json())
+      }
+      getData();
+      //    axios :--
+    </script>
+  </body>
+</html>

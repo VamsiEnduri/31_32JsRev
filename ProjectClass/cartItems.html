@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    cartItems
+
+    <table>
+        <thead>
+            <tr>
+                <th>s.no</th>
+                <th>pName</th>
+                <th>price</th>
+                <th>image</th>
+                <th>delete</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+    </table>
+    <p id="totalPrice"></p>
+    <button id="checkout">checkout</button>
+    <script>
+      //         function cartitemsData(){
+      // let allcartItems=JSON.parse(localStorage.getItem("allCartItems"))
+      // console.log("allCart",allcartItems)
+      //         }
+      //         cartitemsData()
+
+      window.addEventListener("DOMContentLoaded", () => {
+        let allcartItems = JSON.parse(localStorage.getItem("allCartItems"));
+        console.log("allCart", allcartItems);
+
+
+        const tbodyTag=document.querySelector("tbody");
+        let allPrice =0
+        
+        allcartItems.forEach ((item,index)=>{
+
+         
+            allPrice +=item.price
+            tbodyTag.innerHTML+=`<tr>
+                <td>${index+1}</td>
+
+                <td>${item.title}</td>
+                <td>${item.price}</td>
+               
+                <td><img src=${item.image} width="80" height="60"/></td>
+                 <td><button>delete</button></td>
+                </tr>`
+        })
+
+
+        let totalPrice=document.getElementById("totalPrice")
+        totalPrice.innerHTML=`toatal amount :--- ${allPrice}rs`
+        console.log(allPrice)
+        
+
+
+
+
+      });
+
+
+
+      let checkout=document.getElementById("checkout");
+
+      checkout.addEventListener("click",()=>{
+        alert("payment done successully!!!!")
+        location.href="./Dashbaord.html"
+        localStorage.removeItem("allCartItems")
+      })
+
+
+
+    </script>
+  </body>
+</html>
+
+
+
+<!-- jsx :--- -->

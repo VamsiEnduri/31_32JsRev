@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3></h3>
+    <button>logout</button>
+    <button id="cartItems">CartItems</button>
+
+    <script>
+      let userName = JSON.parse(localStorage.getItem("loggedInUser"));
+      let h3Tag = document.querySelector("h3");
+      h3Tag.innerText = `welcome ${userName.name}`;
+      let logoutbtn = document.querySelector("button");
+
+      logoutbtn.addEventListener("click", () => {
+        let confirmation = confirm("are you sure to logout??");
+        if (confirmation) {
+          localStorage.removeItem("loggedInUser");
+          location.href = "./Login.html";
+        } else {
+          location.href = "./DashBaord.html";
+        }
+      });
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        let res = await fetch("https://fakestoreapi.com/products");
+        let data = await res.json();
+        showProducts(data);
+      });
+
+      function showProducts(data) {
+        let container = document.createElement("div");
+        container.style.display = "grid";
+        container.style.gridTemplateColumns = "repeat(4, 1fr)";
+        container.style.gap = "20px";
+
+        data.forEach((product) => {
+          let card = document.createElement("div");
+          card.style.border = "1px solid #ccc";
+          card.style.padding = "10px";
+          card.style.borderRadius = "10px";
+
+          card.innerHTML = `
+      <img src="${product.image}" style="width:100px; height:100px;" />
+      <h4>${product.title.slice(0, 25)}...</h4>
+      <p>Price: ₹${product.price}</p>
+      <button>Add to Cart</button>
+    `;
+
+          let btn = card.querySelector("button");
+          btn.addEventListener("click", () => {
+            addToCart(product);
+          });
+
+          container.appendChild(card);
+        });
+
+        document.body.appendChild(container);
+      }
+
+      function addToCart(product) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("🛒 Item added to cart!");
+      }
+
+      let CartItems = document.getElementById("cartItems");
+      CartItems.addEventListener("click", () => {
+        location.href = "./CartItems.html";
+      });
+    </script>
+  </body>
+</html>
